@@ -14,7 +14,7 @@ public class Piece : MonoBehaviour
     public float stepDelay = 1f;
     public float lockDelay = 0.5f;
     public float stepTime,lockTime;
-
+    public SwipeMobile controlMobile;
     public void Init(Board board,TetrominoData data,Vector3Int position)
     {
         this.board = board;
@@ -32,6 +32,14 @@ public class Piece : MonoBehaviour
             this.Cells[i] = (Vector3Int)data.Cells[i];
         }
     }
+    public void ButtonHardDrop()
+    {
+        HardDrop();
+    }
+    public void ButtonMenu()
+    {
+        SceneManager.LoadScene("UI");
+    }
     private void Update()
     {
         this.board.Clear(this);
@@ -39,20 +47,20 @@ public class Piece : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             Rotate(-1);
-        }else if (Input.GetKeyDown(KeyCode.T))
+        }else if (/*Input.GetKeyDown(KeyCode.T)*/ controlMobile.VerticalSwipe > 0)
         {
             Rotate(1);
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (/*Input.GetKeyDown(KeyCode.LeftArrow)*/ controlMobile.HorizontalSwipe < 0)
         {
             Move(Vector2Int.left);
-        }else if (Input.GetKeyDown(KeyCode.RightArrow))
+        }else if (/*Input.GetKeyDown(KeyCode.RightArrow)*/ controlMobile.HorizontalSwipe > 0)
         {
             Move(Vector2Int.right);
-        }else if (Input.GetKeyDown(KeyCode.DownArrow))
+        }else if (/*Input.GetKeyDown(KeyCode.DownArrow)*/ controlMobile.VerticalSwipe < 0)
         {
             Move(Vector2Int.down);
-        }else if (Input.GetKeyDown(KeyCode.Space))
+        }else if (Input.GetKeyDown(KeyCode.Space) )
         {
             HardDrop();
         }
