@@ -2,7 +2,9 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Board : MonoBehaviour
@@ -13,7 +15,8 @@ public class Board : MonoBehaviour
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 20);
     public GameObject gameOverText;
-
+    public int score;
+    public Text ScoreToText;
     public RectInt Bounds
     {
         get
@@ -35,7 +38,9 @@ public class Board : MonoBehaviour
     {
         SpawnPieace();
     }
-
+    private void Update() {
+        ScoreToText.text=score.ToString();
+    }
     public void SpawnPieace()
     {
         int random = Random.Range(0, this.tetrominoses.Length);
@@ -54,7 +59,14 @@ public class Board : MonoBehaviour
     private void GameOver()
     {
         this.tilemap.ClearAllTiles();
-        
+        EnableGameOver();
+        Invoke("DisableGameOver",5f);
+    }
+    public void EnableGameOver(){
+        gameOverText.SetActive(true);
+    }
+    public void DisableGameOver(){
+        gameOverText.SetActive(false);
     }
     public void Set(Piece piece)
     {
@@ -71,7 +83,7 @@ public class Board : MonoBehaviour
             Vector3Int tilePosition = piece.Cells[i]+piece.position;
             this.tilemap.SetTile(tilePosition, null);
         }
-        
+       
     }
     
     public bool IsValidPosition(Piece piece,Vector3Int position)
@@ -101,6 +113,7 @@ public class Board : MonoBehaviour
             if (IsLineFull(row))
             {
                 LineClear(row);
+                score++;
             }
             else
             {
@@ -143,5 +156,8 @@ public class Board : MonoBehaviour
         }
 
 
+    }
+    public void IncrementScore(){
+       score.ToString();
     }
 }
